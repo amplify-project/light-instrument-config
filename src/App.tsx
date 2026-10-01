@@ -196,7 +196,7 @@ function App() {
               </div>
 
               <div className="settings-actions">
-                <button className="apply-btn" disabled={getDirtySettings().length == 0} onClick={handleApplyAll}>
+                <button className="apply-btn" onClick={handleApplyAll}>
                   Apply Changes
                 </button>
               </div>
