@@ -1,8 +1,8 @@
 [package]
-name = "tauri-app"
+name = "light-instrument-config"
 version = "0.1.0"
-description = "A Tauri App"
-authors = ["you"]
+description = "Application for configuring Light Instruments and controllers via USB"
+authors = ["Thomas Röggla"]
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
