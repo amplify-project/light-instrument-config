@@ -1,7 +1,20 @@
-# Tauri + React + Typescript
+# AMPLIFY Light Instrument Config
 
-This template should help get you started developing with Tauri, React and Typescript in Vite.
+This repository contains a desktop application based on Tauri and React for
+configuring Light Instrument and LED controller boards connected to a serial
+port via USB.
 
-## Recommended IDE Setup
+## Development
 
-- [VS Code](https://code.visualstudio.com/) + [Tauri](https://marketplace.visualstudio.com/items?itemName=tauri-apps.tauri-vscode) + [rust-analyzer](https://marketplace.visualstudio.com/items?itemName=rust-lang.rust-analyzer)
+To launch the application in development mode:
+
+```bash
+npm install
+npm run tauri dev
+```
+
+To build a production executable:
+
+```bash
+npm run tauri build
+```
