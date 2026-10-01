@@ -85,8 +85,13 @@ function App() {
     setSettings(newSettings);
   }
 
+  function getDirtySettings() {
+    return settings.filter(s => s.key !== 'type' && s.value !== originalSettings[s.key]);
+  }
+
   async function handleApplyAll() {
-    const dirtySettings = settings.filter(s => s.key !== 'type' && s.value !== originalSettings[s.key]);
+    const dirtySettings = getDirtySettings();
+
     if (dirtySettings.length === 0) {
       setStatus("No changes to apply");
       return;
@@ -183,7 +188,7 @@ function App() {
             </div>
 
             <div className="settings-actions">
-              <button className="apply-btn" onClick={handleApplyAll}>
+              <button className="apply-btn" disabled={getDirtySettings().length == 0} onClick={handleApplyAll}>
                 Apply Changes
               </button>
             </div>
