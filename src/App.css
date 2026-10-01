@@ -6,7 +6,7 @@ html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #1e1e1e;
+  background-color: #121212;
 }
 
 :root {
@@ -16,7 +16,7 @@ html, body, #root {
   font-weight: 400;
 
   color: #f6f6f6;
-  background-color: #1e1e1e;
+  background-color: #121212;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -108,21 +108,21 @@ button:disabled {
 }
 
 .connect-btn {
-  background: linear-gradient(to bottom, #34a853, #2d9248);
-  border-color: #2d9248;
+  background: linear-gradient(to bottom, #509664, #437e54);
+  border-color: #437e54;
 }
 
 .connect-btn:hover:not(:disabled) {
-  background: linear-gradient(to bottom, #3ebc5d, #34a853);
+  background: linear-gradient(to bottom, #5ca971, #509664);
 }
 
 .disconnect-btn {
-  background: linear-gradient(to bottom, #ea4335, #d33828);
-  border-color: #d33828;
+  background: linear-gradient(to bottom, #b35a52, #984c45);
+  border-color: #984c45;
 }
 
 .disconnect-btn:hover:not(:disabled) {
-  background: linear-gradient(to bottom, #f05a4d, #ea4335);
+  background: linear-gradient(to bottom, #c7645b, #b35a52);
 }
 
 
@@ -138,8 +138,8 @@ button:disabled {
 }
 
 .status.connected {
-  border-left: 3px solid #646cff;
-  color: #4caf50;
+  border-left: 3px solid #6368b7;
+  color: #509664;
 }
 
 .settings-container {
@@ -209,11 +209,11 @@ button:disabled {
 .apply-btn {
   width: 100%;
   padding: 8px;
-  background: linear-gradient(to bottom, #646cff, #535bf2);
-  border-color: #535bf2;
+  background: linear-gradient(to bottom, #6368b7, #5459a0);
+  border-color: #5459a0;
   font-weight: 500;
 }
 
 .apply-btn:hover:not(:disabled) {
-  background: linear-gradient(to bottom, #747bff, #646cff);
+  background: linear-gradient(to bottom, #7278c8, #6368b7);
 }

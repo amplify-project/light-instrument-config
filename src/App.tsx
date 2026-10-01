@@ -141,61 +141,70 @@ function App() {
   }, [isConnected, selectedPort]);
 
   return (
-    <main className="container">
-      <div className="content-wrapper">
-        <div className="row">
-          <label htmlFor="port-select">Serial Port: </label>
-          <select
-            id="port-select"
-            value={selectedPort}
-            onChange={(e) => setSelectedPort(e.target.value)}
-            disabled={isConnected}
-          >
-            {ports.length === 0 && <option value="">No ports found</option>}
-            {ports.map((port) => (
-              <option key={port} value={port}>
-                {port}
-              </option>
-            ))}
-          </select>
-          <button onClick={refreshPorts} disabled={isConnected}>Refresh</button>
-          <button onClick={toggleConnection} className={isConnected ? "disconnect-btn" : "connect-btn"}>
-            {isConnected ? "Disconnect" : "Connect"}
-          </button>
-        </div>
+    <>
+      <svg style={{ backgroundColor: "#121212", position: "absolute", width: "100%", height: "100%", top: 0, left: 0 }}>
+        <pattern id="pattern-1" x="8.137809187279117" y="20.863957597173147" width="23.14487632508834" height="23.14487632508834" patternUnits="userSpaceOnUse" patternTransform="translate(-12.57243816254417,-12.57243816254417)">
+          <circle cx="0.5786219081272085" cy="0.5786219081272085" r="0.5786219081272085" style={{ fill: "rgb(51, 51, 51)" }}></circle>
+        </pattern>
+        <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-1)"></rect>
+      </svg>
 
-        {status && <p className={`status ${isConnected ? "connected" : ""}`}>{status}</p>}
-
-        {isConnected && settings.length > 0 && (
-          <div className="settings-container">
-            <div className="settings-list">
-              {settings.map((setting, index) => (
-                <div key={index} className="setting-item">
-                  <span className="setting-key">{setting.key}:</span>
-                  {setting.key === "type" ? (
-                    <span className="setting-value">{setting.value}</span>
-                  ) : (
-                    <div className="setting-edit-group">
-                      <input
-                        className="setting-input"
-                        value={setting.value}
-                        onChange={(e) => handleValueChange(index, e.target.value)}
-                      />
-                    </div>
-                  )}
-                </div>
+      <main className="container">
+        <div className="content-wrapper">
+          <div className="row">
+            <label htmlFor="port-select">Serial Port: </label>
+            <select
+              id="port-select"
+              value={selectedPort}
+              onChange={(e) => setSelectedPort(e.target.value)}
+              disabled={isConnected}
+            >
+              {ports.length === 0 && <option value="">No ports found</option>}
+              {ports.map((port) => (
+                <option key={port} value={port}>
+                  {port}
+                </option>
               ))}
-            </div>
-
-            <div className="settings-actions">
-              <button className="apply-btn" disabled={getDirtySettings().length == 0} onClick={handleApplyAll}>
-                Apply Changes
-              </button>
-            </div>
+            </select>
+            <button onClick={refreshPorts} disabled={isConnected}>Refresh</button>
+            <button onClick={toggleConnection} className={isConnected ? "disconnect-btn" : "connect-btn"}>
+              {isConnected ? "Disconnect" : "Connect"}
+            </button>
           </div>
-        )}
-      </div>
-    </main>
+
+          {status && <p className={`status ${isConnected ? "connected" : ""}`}>{status}</p>}
+
+          {isConnected && settings.length > 0 && (
+            <div className="settings-container">
+              <div className="settings-list">
+                {settings.map((setting, index) => (
+                  <div key={index} className="setting-item">
+                    <span className="setting-key">{setting.key}:</span>
+                    {setting.key === "type" ? (
+                      <span className="setting-value">{setting.value}</span>
+                    ) : (
+                      <div className="setting-edit-group">
+                        <input
+                          className="setting-input"
+                          value={setting.value}
+                          onChange={(e) => handleValueChange(index, e.target.value)}
+                        />
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+
+              <div className="settings-actions">
+                <button className="apply-btn" disabled={getDirtySettings().length == 0} onClick={handleApplyAll}>
+                  Apply Changes
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </main>
+    </>
   );
 }
 
