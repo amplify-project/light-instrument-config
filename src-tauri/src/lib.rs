@@ -10,12 +10,10 @@ struct PortEntry {
     port: Box<dyn serialport::SerialPort>,
     stop_signal: Arc<AtomicBool>,
 }
-
 struct SerialState {
     ports: Mutex<HashMap<String, PortEntry>>,
 }
 
-// Learn more about Tauri commands at https://tauri.app/develop/calling-rust/
 #[tauri::command]
 fn list_ports() -> Vec<String> {
     match serialport::available_ports() {
@@ -39,11 +37,11 @@ fn open_port(state: State<'_, SerialState>, app: AppHandle, port_name: String) -
     let stop_signal = Arc::new(AtomicBool::new(false));
     let thread_stop_signal = stop_signal.clone();
 
-    ports.insert(port_name.clone(), PortEntry { 
+    ports.insert(port_name.clone(), PortEntry {
         port: port.try_clone().map_err(|e| e.to_string())?,
-        stop_signal 
+        stop_signal
     });
-    
+
     let p_name = port_name.clone();
     std::thread::spawn(move || {
         loop {
@@ -54,8 +52,10 @@ fn open_port(state: State<'_, SerialState>, app: AppHandle, port_name: String) -
             {
                 let state = app.state::<SerialState>();
                 let mut ports_lock = state.ports.lock().unwrap();
+
                 if let Some(entry) = ports_lock.get_mut(&p_name) {
                     let mut buffer = [0; 1024];
+
                     // We use a short timeout for the monitoring read to not block commands for too long
                     match entry.port.read(&mut buffer) {
                         Ok(t) if t > 0 => {
@@ -74,7 +74,7 @@ fn open_port(state: State<'_, SerialState>, app: AppHandle, port_name: String) -
                     break;
                 }
             }
-            
+
             std::thread::sleep(Duration::from_millis(100));
         }
     });
@@ -85,6 +85,7 @@ fn open_port(state: State<'_, SerialState>, app: AppHandle, port_name: String) -
 #[tauri::command]
 fn close_port(state: State<'_, SerialState>, port_name: String) {
     let mut ports = state.ports.lock().unwrap();
+
     if let Some(entry) = ports.remove(&port_name) {
         entry.stop_signal.store(true, Ordering::SeqCst);
     }
@@ -93,17 +94,20 @@ fn close_port(state: State<'_, SerialState>, port_name: String) {
 #[tauri::command]
 fn get_settings(state: State<'_, SerialState>, app: AppHandle, port_name: String) -> Result<String, String> {
     let mut ports = state.ports.lock().unwrap();
+
     if let Some(entry) = ports.get_mut(&port_name) {
         let _ = entry.port.clear(serialport::ClearBuffer::Input);
+
         if let Err(e) = entry.port.write_all(b"getsettings\n") {
             let err_msg = e.to_string();
             ports.remove(&port_name);
             let _ = app.emit("serial-disconnected", serde_json::json!({ "port": port_name }));
+
             return Err(err_msg);
         }
-        
+
         std::thread::sleep(Duration::from_millis(100));
-        
+
         let mut buffer = [0; 1024];
         match entry.port.read(&mut buffer) {
             Ok(t) => Ok(String::from_utf8_lossy(&buffer[..t]).trim().to_string()),
@@ -112,6 +116,7 @@ fn get_settings(state: State<'_, SerialState>, app: AppHandle, port_name: String
                 let err_msg = e.to_string();
                 ports.remove(&port_name);
                 let _ = app.emit("serial-disconnected", serde_json::json!({ "port": port_name }));
+
                 Err(err_msg)
             }
         }
@@ -123,22 +128,26 @@ fn get_settings(state: State<'_, SerialState>, app: AppHandle, port_name: String
 #[tauri::command]
 fn update_setting(state: State<'_, SerialState>, app: AppHandle, port_name: String, key: String, value: String) -> Result<(), String> {
     let mut ports = state.ports.lock().unwrap();
+
     if let Some(entry) = ports.get_mut(&port_name) {
         let _ = entry.port.clear(serialport::ClearBuffer::Input);
         let command = format!("{}={}\n", key, value);
+
         if let Err(e) = entry.port.write_all(command.as_bytes()) {
             let err_msg = e.to_string();
             ports.remove(&port_name);
             let _ = app.emit("serial-disconnected", serde_json::json!({ "port": port_name }));
+
             return Err(err_msg);
         }
-        
+
         std::thread::sleep(Duration::from_millis(100));
-        
+
         let mut buffer = [0; 1024];
         match entry.port.read(&mut buffer) {
             Ok(t) => {
                 let response = String::from_utf8_lossy(&buffer[..t]).trim().to_string();
+
                 if response == "OK" {
                     Ok(())
                 } else if response == "ERR" {
@@ -152,6 +161,7 @@ fn update_setting(state: State<'_, SerialState>, app: AppHandle, port_name: Stri
                 let err_msg = e.to_string();
                 ports.remove(&port_name);
                 let _ = app.emit("serial-disconnected", serde_json::json!({ "port": port_name }));
+
                 Err(err_msg)
             }
         }
