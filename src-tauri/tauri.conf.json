@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "tauri-app",
+  "productName": "Light Instrument Config",
   "version": "1.0.0",
   "identifier": "com.tom.tauri-app",
   "build": {
