@@ -28,7 +28,7 @@ html, body, #root {
 .container {
   height: 100%;
   width: 100%;
-  padding: 20px;
+  padding: 20px 20px 10px 20px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -44,6 +44,7 @@ html, body, #root {
   display: flex;
   flex-direction: column;
   gap: 12px;
+  flex: 1;
 }
 
 .row {
@@ -141,12 +142,25 @@ button:disabled {
   color: #4caf50;
 }
 
+.settings-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
+}
+
 .settings-list {
   background-color: #2b2b2b;
   border-radius: 6px;
   border: 1px solid #454545;
   padding: 4px 0;
   margin-top: 10px;
+}
+
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 0px;
 }
 
 .setting-item {
@@ -190,12 +204,6 @@ button:disabled {
   border-radius: 4px;
   text-align: right;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-}
-
-.settings-actions {
-  display: flex;
-  justify-content: flex-end;
-  padding: 10px 0px;
 }
 
 .apply-btn {

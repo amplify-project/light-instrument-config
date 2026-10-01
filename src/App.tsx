@@ -162,7 +162,7 @@ function App() {
         {status && <p className={`status ${isConnected ? "connected" : ""}`}>{status}</p>}
 
         {isConnected && settings.length > 0 && (
-          <>
+          <div className="settings-container">
             <div className="settings-list">
               {settings.map((setting, index) => (
                 <div key={index} className="setting-item">
@@ -187,7 +187,7 @@ function App() {
                 Apply Changes
               </button>
             </div>
-            </>
+          </div>
         )}
       </div>
     </main>
