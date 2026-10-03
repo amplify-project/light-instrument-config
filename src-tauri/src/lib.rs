@@ -126,6 +126,29 @@ fn get_settings(state: State<'_, SerialState>, app: AppHandle, port_name: String
 }
 
 #[tauri::command]
+fn reboot_device(state: State<'_, SerialState>, app: AppHandle, port_name: String) -> Result<(), String> {
+    let mut ports = state.ports.lock().unwrap();
+
+    if let Some(entry) = ports.get_mut(&port_name) {
+        let _ = entry.port.clear(serialport::ClearBuffer::Input);
+        let command = "reboot";
+
+        if let Err(e) = entry.port.write_all(command.as_bytes()) {
+            let err_msg = e.to_string();
+            ports.remove(&port_name);
+            let _ = app.emit("serial-disconnected", serde_json::json!({ "port": port_name }));
+
+            return Err(err_msg);
+        }
+
+        std::thread::sleep(Duration::from_millis(100));
+        Ok(())
+    } else {
+        Err("Port not open".to_string())
+    }
+}
+
+#[tauri::command]
 fn update_setting(state: State<'_, SerialState>, app: AppHandle, port_name: String, key: String, value: String) -> Result<(), String> {
     let mut ports = state.ports.lock().unwrap();
 
@@ -182,7 +205,8 @@ pub fn run() {
             open_port,
             close_port,
             get_settings,
-            update_setting
+            update_setting,
+            reboot_device
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
