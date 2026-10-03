@@ -15,6 +15,7 @@ function App() {
     try {
       const availablePorts = await invoke<string[]>("list_ports");
       setPorts(availablePorts);
+
       if (availablePorts.length > 0 && !selectedPort) {
         setSelectedPort(availablePorts[0]);
       }
@@ -87,6 +88,15 @@ function App() {
 
   function getDirtySettings() {
     return settings.filter(s => s.key !== 'type' && s.value !== originalSettings[s.key]);
+  }
+
+  async function handleReboot() {
+    try {
+      await invoke("reboot_device", { portName: selectedPort });
+      await toggleConnection();
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   async function handleApplyAll() {
@@ -198,6 +208,9 @@ function App() {
               <div className="settings-actions">
                 <button className="apply-btn" onClick={handleApplyAll}>
                   Apply Changes
+                </button>
+                <button className="reboot-btn" onClick={handleReboot}>
+                  Reboot
                 </button>
               </div>
             </div>
