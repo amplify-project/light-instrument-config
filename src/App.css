@@ -16,7 +16,7 @@ html, body, #root {
   font-weight: 400;
 
   color: #f6f6f6;
-  background-color: #121212;
+  background-color: #1e1e1e;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -159,8 +159,8 @@ button:disabled {
 
 .settings-actions {
   display: flex;
-  justify-content: flex-end;
   padding: 10px 0px;
+  gap: 8px;
 }
 
 .setting-item {
@@ -207,7 +207,7 @@ button:disabled {
 }
 
 .apply-btn {
-  width: 100%;
+  flex: 3;
   padding: 8px;
   background: linear-gradient(to bottom, #6368b7, #5459a0);
   border-color: #5459a0;
@@ -216,4 +216,16 @@ button:disabled {
 
 .apply-btn:hover:not(:disabled) {
   background: linear-gradient(to bottom, #7278c8, #6368b7);
+}
+
+.reboot-btn {
+  flex: 1;
+  padding: 8px;
+  background: linear-gradient(to bottom, #b35a52, #984c45);
+  border-color: #984c45;
+  font-weight: 500;
+}
+
+.reboot-btn:hover:not(:disabled) {
+  background: linear-gradient(to bottom, #c7645b, #b35a52);
 }
