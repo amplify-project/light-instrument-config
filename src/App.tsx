@@ -27,6 +27,7 @@ function App() {
   async function fetchSettings(port: string) {
     try {
       const response = await invoke<string>("get_settings", { portName: port });
+
       if (response) {
         const parsedSettings = response.split(',').map(s => {
           const [key, value] = s.split('=');
@@ -37,6 +38,7 @@ function App() {
         const originals: Record<string, string> = {};
         parsedSettings.forEach(s => originals[s.key] = s.value);
         setOriginalSettings(originals);
+
         return true;
       }
       return false;
@@ -50,6 +52,7 @@ function App() {
     if (isConnected) {
       try {
         await invoke("close_port", { portName: selectedPort });
+
         setIsConnected(false);
         setSettings([]);
         setOriginalSettings({});
@@ -62,9 +65,12 @@ function App() {
         setStatus("Please select a port");
         return;
       }
+
       setStatus("Connecting...");
+
       try {
         await invoke("open_port", { portName: selectedPort });
+
         setIsConnected(true);
         setStatus("Connected. Fetching settings...");
 
