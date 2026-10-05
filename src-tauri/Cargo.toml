@@ -1,6 +1,6 @@
 [package]
 name = "light-instrument-config"
-version = "1.0.0"
+version = "1.1.0"
 description = "Application for configuring Light Instruments and controllers via USB"
 authors = ["Thomas Röggla"]
 edition = "2021"
